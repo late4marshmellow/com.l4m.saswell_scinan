@@ -1,6 +1,6 @@
 'use strict';
 
-const ScinanDriver = require('../../lib/ScinanDriver2.js');
+const ScinanDriver = require('../../lib/ScinanDriver.js');
 
 class NEQHKITWIFIDriver extends ScinanDriver {}
 
