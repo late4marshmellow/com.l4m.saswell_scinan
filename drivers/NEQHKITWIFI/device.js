@@ -1,6 +1,6 @@
 'use strict';
 
-const ScinanDevice = require('../../lib/ScinanDevice2.js');
+const ScinanDevice = require('../../lib/ScinanDevice.js');
 
 class NEQHKITWIFIDevice extends ScinanDevice {}
 
