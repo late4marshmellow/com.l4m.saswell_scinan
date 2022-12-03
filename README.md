@@ -6,15 +6,8 @@ Learing curve is steep but i had made some progress.
 What is fixed and what is left to figure out.
 
 # Fixed
-Corrected the code that results in forEach is not a function during pairing
-
-# To-Be fixed
-It seems that Scinan has done some changes in how tokens should be obtained, the current way seems to just open a window to log in where you need to input your username and password (again) this window would naturally not show up in Homey dialog and results in no new devices found.
-
-- i have sucsessfully obtained this token manually and added my thermostats by tinker with the code and hardcode my token. 
-if anyone with javascript knowledge would like to point me in the right direction, its appreciated. 
-
-feel free to contribute :)
+-Corrected the "forEach is not a function" during pairing
+-Fixed so token again will be obtained from scinan.
 
 
 # Scinan
@@ -33,6 +26,9 @@ There are probably more devices supported. Open a issue and I'll try to find out
 
 #### Prosmart
  - PST50W
+
+#### Pergo QuickHeat
+ - The new one sold in Coop OBS Bygg (Norway)
 
 ## Supported features
  - [x] Turn On/Off
