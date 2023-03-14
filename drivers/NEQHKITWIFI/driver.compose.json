@@ -9,7 +9,7 @@
   },
   "class": "thermostat",
   "capabilities": [
-    "onoff",
+    //"onoff", //onoff does not do anything on this device
     "mode",
     "target_temperature",
     "measure_temperature",
