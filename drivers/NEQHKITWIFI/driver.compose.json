@@ -8,6 +8,15 @@
     "large": "drivers/PST50W/assets/images/large.jpg"
   },
   "class": "thermostat",
+  {
+  "actions": [
+    {
+      "id": "away",
+      "title": { "en": "Away" 
+                 "no": "Borte"},
+    }
+  ]
+},
   "capabilities": [
     //"onoff", //onoff does not do anything on this device
     "mode",
