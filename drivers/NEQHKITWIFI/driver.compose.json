@@ -8,17 +8,8 @@
     "large": "drivers/PST50W/assets/images/large.jpg"
   },
   "class": "thermostat",
-  {
-  "actions": [
-    {
-      "id": "away",
-      "title": { "en": "Away" 
-                 "no": "Borte"},
-    }
-  ]
-},
+  
   "capabilities": [
-    //"onoff", //onoff does not do anything on this device
     "mode",
     "target_temperature",
     "measure_temperature",
@@ -39,7 +30,7 @@
       },
       "options": {
         "logo": "pair_logo.svg",
-        "usernameLabel": "SMART-E account",
+        "usernameLabel": "Thermostat account",
         "usernamePlaceholder": "user@domain.com",
         "passwordLabel": "Password",
         "passwordPlaceholder": "Password"

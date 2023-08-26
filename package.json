@@ -1,6 +1,6 @@
 {
-  "name": "com.scinan.api",
-  "version": "1.0.10",
+  "name": "com.saswell.api",
+  "version": "0.1.0",
   "description": "Support Prosmart wifi climate controllers",
   "main": "app.js",
   "scripts": {
@@ -13,9 +13,9 @@
     "install:clean": "homey app install -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Petter Ruud",
+  "author": "Petter Ruud, late4marshmellow",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.7.0"
   }
 }
