@@ -1,15 +1,15 @@
 {
   "name": {
-    "en": "Pergo QuickHeat New",
-    "no": "Pergo QuickHeat New"
+    "en": "Saswell Floor Thermostat",
+    "no": "Saswell Floor Thermostat"
   },
   "images": {
     "small": "drivers/PST50W/assets/images/small.jpg",
     "large": "drivers/PST50W/assets/images/large.jpg"
   },
   "class": "thermostat",
-  
   "capabilities": [
+    "onoff",
     "mode",
     "target_temperature",
     "measure_temperature",
@@ -30,7 +30,7 @@
       },
       "options": {
         "logo": "pair_logo.svg",
-        "usernameLabel": "Thermostat account",
+        "usernameLabel": "Saswell Thermostat account",
         "usernamePlaceholder": "user@domain.com",
         "passwordLabel": "Password",
         "passwordPlaceholder": "Password"

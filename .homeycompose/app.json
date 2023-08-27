@@ -1,15 +1,15 @@
 {
-  "id": "com.saswell.api",
+  "id": "com.l4m.saswell_scinan",
   "version": "0.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
-    "en": "Saswell Thermostat",
-    "no": "Saswell Thermostat"
+    "en": "Saswell and Scinan Thermostats",
+    "no": "Saswell og Scinan Thermostater"
   },
   "description": {
-    "en": "Support IoT devices/controllers using Saswell api. Add thermostats from Saswell, Prosmart, Pergo Quickheat and other brands thats are using the Saswell API.",
-    "no": "Støtt IoT apparater med Saswell api. Legg til termostater fra Saswell, Prosmart, Pergo Quickheat og andre merker som bruker Saswell API."
+    "en": "Support IoT devices/controllers using Saswell/Scinan api. Add thermostats from Saswell, Prosmart, Pergo Quickheat and other brands thats are using the Saswell or Scinan API.",
+    "no": "Støtt IoT apparater med Saswell/Scinan api. Legg til termostater fra Saswell, Prosmart, Pergo Quickheat og andre merker som bruker Saswell eller Scinan API."
   },
   "category": [
     "climate"
@@ -19,12 +19,14 @@
     "en": [
       "Profag",
       "Pergo Quickheat",
-      "Saswell"
+      "Saswell",
+      "Scinan"
     ],
     "no": [
       "Profag",
       "Pergo Quickheat",
-      "Saswell"
+      "Saswell",
+      "Scinan"
     ]
   },
   "permissions": [],
