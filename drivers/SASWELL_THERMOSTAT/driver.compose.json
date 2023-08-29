@@ -4,8 +4,8 @@
     "no": "Saswell Floor Thermostat"
   },
   "images": {
-    "small": "drivers/PST50W/assets/images/small.jpg",
-    "large": "drivers/PST50W/assets/images/large.jpg"
+    "small": "drivers/SASWELL_THERMOSTAT/assets/images/small.jpg",
+    "large": "drivers/SASWELL_THERMOSTAT/assets/images/large.jpg"
   },
   "class": "thermostat",
   "capabilities": [
