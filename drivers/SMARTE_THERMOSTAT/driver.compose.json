@@ -4,8 +4,8 @@
     "no": "Smart-E Thermostat"
   },
   "images": {
-    "small": "drivers/SMARTE_THOERMOSTAT/assets/images/small.jpg",
-    "large": "drivers/SMARTE_THOERMOSTAT/assets/images/large.jpg"
+    "small": "drivers/SMARTE_THERMOSTAT/assets/images/small.jpg",
+    "large": "drivers/SMARTE_THERMOSTAT/assets/images/large.jpg"
   },
   "class": "thermostat",
   "capabilities": [
