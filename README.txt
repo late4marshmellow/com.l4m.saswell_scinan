@@ -1,8 +1,9 @@
-Scinan
-Support wifi climate controllers using the Scinan API https://api.scinan.com.
+Saswell and Scinan Controllers
+Support wifi climate controllers using the Scinan or Saswell API
 
 Supported Devices
-These are the ones I know of as I have them myself. There are probably more devices supported. Open a issue and I'll try to find out.
+Any device using either the Smart-E (API v1) or Thermostat (API v2) app by Saswell should be able to connect. 
+These are the ones reported working. There are probably more devices supported. Open a issue and I'll try to find out.
 
 Saswell
  - SAS920FHL-7W-WIFI
@@ -11,6 +12,7 @@ Prosmart
  - PST50W
 
 Pergo Quickheat
+ - NEQHKITWIFI
  - PGUDLQHKITEU
 
 Supported features
