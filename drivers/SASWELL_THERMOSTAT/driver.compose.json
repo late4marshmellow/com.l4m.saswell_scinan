@@ -9,8 +9,15 @@
   },
   "repair": [
     {
-      "id": "login_oauth2",
-      "template": "login_oauth2"
+      "id": "start",
+      "template": "login_credentials",
+      "options": {
+        "logo": "pair_logo.svg",
+        "usernameLabel": "Saswell Thermostat account",
+        "usernamePlaceholder": "user@domain.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password"
+      }
     }
   ],
   "class": "thermostat",
