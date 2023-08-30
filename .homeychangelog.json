@@ -28,5 +28,8 @@
   },
   "2.0.1": {
     "en": "minor updates to descriptions"
+  },
+  "2.0.2": {
+    "en": "Added repair device for saswell api"
   }
 }
