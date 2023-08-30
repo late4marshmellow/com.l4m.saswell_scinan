@@ -31,5 +31,8 @@
   },
   "2.0.2": {
     "en": "Added repair device for saswell api"
+  },
+  "2.0.3": {
+    "en": "corrected repair template for saswell api"
   }
 }
