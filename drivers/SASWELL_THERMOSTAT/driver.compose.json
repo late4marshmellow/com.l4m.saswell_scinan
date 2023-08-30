@@ -7,6 +7,12 @@
     "small": "drivers/SASWELL_THERMOSTAT/assets/images/small.jpg",
     "large": "drivers/SASWELL_THERMOSTAT/assets/images/large.jpg"
   },
+  "repair": [
+    {
+      "id": "login_oauth2",
+      "template": "login_oauth2"
+    }
+  ],
   "class": "thermostat",
   "capabilities": [
     "onoff",
