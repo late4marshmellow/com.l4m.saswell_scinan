@@ -1,7 +1,7 @@
 {
   "name": {
-    "en": "Saswell Floor Thermostat",
-    "no": "Saswell Floor Thermostat"
+    "en": "V2 Saswell (\"Thermostat\" App)",
+    "no": "V2 Saswell (\"Thermostat\" App)"
   },
   "images": {
     "small": "drivers/SASWELL_THERMOSTAT/assets/images/small.jpg",

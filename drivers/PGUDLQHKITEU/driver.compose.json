@@ -4,6 +4,7 @@
     "en": "Pergo Quickheat Wifi",
     "no": "Pergo Quickheat Trådløs"
   },
+  "deprecated": true,
   "images": {
     "small": "drivers/PGUDLQHKITEU/assets/images/small.jpg",
     "large": "drivers/PGUDLQHKITEU/assets/images/large.jpg"

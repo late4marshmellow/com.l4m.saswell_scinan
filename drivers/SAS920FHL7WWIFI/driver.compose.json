@@ -3,6 +3,7 @@
     "en": "Saswell SAS920FHL-7W-WIFI",
     "no": "Saswell SAS920FHL-7W-WIFI"
   },
+  "deprecated": true,
   "images": {
     "small": "drivers/SAS920FHL7WWIFI/assets/images/small.jpg",
     "large": "drivers/SAS920FHL7WWIFI/assets/images/large.jpg"

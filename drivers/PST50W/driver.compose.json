@@ -3,6 +3,7 @@
     "en": "Profag PST50W",
     "no": "Profag PST50W"
   },
+  "deprecated": true,
   "images": {
     "small": "drivers/PST50W/assets/images/small.jpg",
     "large": "drivers/PST50W/assets/images/large.jpg"

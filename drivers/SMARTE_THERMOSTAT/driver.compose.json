@@ -1,7 +1,7 @@
 {
   "name": {
-    "en": "Smart-E Thermostat",
-    "no": "Smart-E Thermostat"
+    "en": "V1 Scinan (\"Smart-E\" App)",
+    "no": "V1 Scinan (\"Smart-E\" App)"
   },
   "images": {
     "small": "drivers/SMARTE_THERMOSTAT/assets/images/small.jpg",
