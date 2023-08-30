@@ -1,6 +1,7 @@
 node_modules/
 .vscode/*
 bacon.md
+errorcodes.txt
 
 # Added by Homey CLI
 /.homeybuild/
