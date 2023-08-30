@@ -25,5 +25,8 @@
   },
   "2.0.0": {
     "en": "- Corrected the \"forEach is not a function\" during pairing, Fixed so token again will be obtained from scinan.Fixed so token again will be obtained from scinan., Rework of the app, it should now work with the V2 Saswell API (Thermostat App from Saswell)Rework of the app, it should now work with the V2 Saswell API (Thermostat App from Saswell), Added two new standard devices. Scinan using API v1 and Saswell using API v2"
+  },
+  "2.0.1": {
+    "en": "minor updates to descriptions"
   }
 }
