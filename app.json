@@ -78,6 +78,19 @@
         "small": "drivers/PGUDLQHKITEU/assets/images/small.jpg",
         "large": "drivers/PGUDLQHKITEU/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -172,6 +185,19 @@
         "small": "drivers/PST50W/assets/images/small.jpg",
         "large": "drivers/PST50W/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -267,6 +293,19 @@
         "small": "drivers/SAS920FHL7WWIFI/assets/images/small.jpg",
         "large": "drivers/SAS920FHL7WWIFI/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -453,6 +492,23 @@
               "value": 1,
               "min": 1,
               "max": 99
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "no": "Enhetinformasjon"
+          },
+          "children": [
+            {
+              "id": "apiVersion",
+              "type": "label",
+              "label": {
+                "en": "API Version",
+                "no": "API-versjon"
+              }
             }
           ]
         }

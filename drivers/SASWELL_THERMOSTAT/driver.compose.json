@@ -101,6 +101,23 @@
           "max": 99
         }
       ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Device Information",
+        "no": "Enhetinformasjon"
+      },
+      "children": [
+        {
+          "id": "apiVersion",
+          "type": "label",
+          "label": {
+            "en": "API Version",
+            "no": "API-versjon"
+          }
+        }
+      ]
     }
   ]
 }
