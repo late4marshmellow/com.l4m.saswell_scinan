@@ -8,13 +8,13 @@
     "no": "Scinan og Saswell Klima Kontroller"
   },
   "description": {
-    "en": "Support IoT devices/controllers using Saswell/Scinan api. Add thermostats from Saswell, Prosmart, Pergo Quickheat and other brands thats are using the Saswell or Scinan API.",
-    "no": "Støtt IoT apparater med Saswell/Scinan api. Legg til termostater fra Saswell, Prosmart, Pergo Quickheat og andre merker som bruker Saswell eller Scinan API."
+    "en": "Support IoT devices/controllers using Saswell/Scinan API.",
+    "no": "Støtter IoT apparater med Saswell/Scinan API. "
   },
   "category": [
     "climate"
   ],
-  "brandColor": "#FF0000",
+  "brandColor": "#d0021b",
   "tags": {
     "en": [
       "Profag",
