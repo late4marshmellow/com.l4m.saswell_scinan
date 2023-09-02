@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.scinan.api",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -73,10 +73,24 @@
         "en": "Pergo Quickheat Wifi",
         "no": "Pergo Quickheat Trådløs"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/PGUDLQHKITEU/assets/images/small.jpg",
         "large": "drivers/PGUDLQHKITEU/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -166,10 +180,24 @@
         "en": "Profag PST50W",
         "no": "Profag PST50W"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/PST50W/assets/images/small.jpg",
         "large": "drivers/PST50W/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -260,10 +288,24 @@
         "en": "Saswell SAS920FHL-7W-WIFI",
         "no": "Saswell SAS920FHL-7W-WIFI"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/SAS920FHL7WWIFI/assets/images/small.jpg",
         "large": "drivers/SAS920FHL7WWIFI/assets/images/large.jpg"
       },
+      "repair": [
+        {
+          "id": "start",
+          "template": "login_credentials",
+          "options": {
+            "logo": "pair_logo.svg",
+            "usernameLabel": "Saswell Thermostat account",
+            "usernamePlaceholder": "user@domain.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Password"
+          }
+        }
+      ],
       "class": "thermostat",
       "capabilities": [
         "onoff",
@@ -351,8 +393,8 @@
     },
     {
       "name": {
-        "en": "Saswell Floor Thermostat",
-        "no": "Saswell Floor Thermostat"
+        "en": "V2 Saswell (\"Thermostat\" App)",
+        "no": "V2 Saswell (\"Thermostat\" App)"
       },
       "images": {
         "small": "drivers/SASWELL_THERMOSTAT/assets/images/small.jpg",
@@ -452,14 +494,31 @@
               "max": 99
             }
           ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "no": "Enhetinformasjon"
+          },
+          "children": [
+            {
+              "id": "apiVersion",
+              "type": "label",
+              "label": {
+                "en": "API Version",
+                "no": "API-versjon"
+              }
+            }
+          ]
         }
       ],
       "id": "SASWELL_THERMOSTAT"
     },
     {
       "name": {
-        "en": "Smart-E Thermostat",
-        "no": "Smart-E Thermostat"
+        "en": "V1 Scinan (\"Smart-E\" App)",
+        "no": "V1 Scinan (\"Smart-E\" App)"
       },
       "images": {
         "small": "drivers/SMARTE_THERMOSTAT/assets/images/small.jpg",

@@ -8,6 +8,19 @@
     "small": "drivers/PST50W/assets/images/small.jpg",
     "large": "drivers/PST50W/assets/images/large.jpg"
   },
+  "repair": [
+    {
+      "id": "start",
+      "template": "login_credentials",
+      "options": {
+        "logo": "pair_logo.svg",
+        "usernameLabel": "Saswell Thermostat account",
+        "usernamePlaceholder": "user@domain.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password"
+      }
+    }
+  ],
   "class": "thermostat",
   "capabilities": [
     "onoff",

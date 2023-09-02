@@ -34,5 +34,8 @@
   },
   "2.0.3": {
     "en": "corrected repair template for saswell api"
+  },
+  "2.1.0": {
+    "en": "Repair capabilities added, timeline notification in case of need to migrate"
   }
 }
