@@ -8,6 +8,19 @@
     "small": "drivers/SAS920FHL7WWIFI/assets/images/small.jpg",
     "large": "drivers/SAS920FHL7WWIFI/assets/images/large.jpg"
   },
+  "repair": [
+    {
+      "id": "start",
+      "template": "login_credentials",
+      "options": {
+        "logo": "pair_logo.svg",
+        "usernameLabel": "Saswell Thermostat account",
+        "usernamePlaceholder": "user@domain.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password"
+      }
+    }
+  ],
   "class": "thermostat",
   "capabilities": [
     "onoff",

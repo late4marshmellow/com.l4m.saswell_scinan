@@ -73,6 +73,7 @@
         "en": "Pergo Quickheat Wifi",
         "no": "Pergo Quickheat Trådløs"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/PGUDLQHKITEU/assets/images/small.jpg",
         "large": "drivers/PGUDLQHKITEU/assets/images/large.jpg"
@@ -166,6 +167,7 @@
         "en": "Profag PST50W",
         "no": "Profag PST50W"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/PST50W/assets/images/small.jpg",
         "large": "drivers/PST50W/assets/images/large.jpg"
@@ -260,6 +262,7 @@
         "en": "Saswell SAS920FHL-7W-WIFI",
         "no": "Saswell SAS920FHL-7W-WIFI"
       },
+      "deprecated": true,
       "images": {
         "small": "drivers/SAS920FHL7WWIFI/assets/images/small.jpg",
         "large": "drivers/SAS920FHL7WWIFI/assets/images/large.jpg"
@@ -351,8 +354,8 @@
     },
     {
       "name": {
-        "en": "Saswell Floor Thermostat",
-        "no": "Saswell Floor Thermostat"
+        "en": "V2 Saswell (\"Thermostat\" App)",
+        "no": "V2 Saswell (\"Thermostat\" App)"
       },
       "images": {
         "small": "drivers/SASWELL_THERMOSTAT/assets/images/small.jpg",
@@ -458,8 +461,8 @@
     },
     {
       "name": {
-        "en": "Smart-E Thermostat",
-        "no": "Smart-E Thermostat"
+        "en": "V1 Scinan (\"Smart-E\" App)",
+        "no": "V1 Scinan (\"Smart-E\" App)"
       },
       "images": {
         "small": "drivers/SMARTE_THERMOSTAT/assets/images/small.jpg",
