@@ -115,7 +115,8 @@
           "label": {
             "en": "API Version",
             "no": "API-versjon"
-          }
+          },
+          "value": "1"
         }
       ]
     }

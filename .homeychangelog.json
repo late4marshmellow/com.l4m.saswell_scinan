@@ -37,5 +37,14 @@
   },
   "2.1.0": {
     "en": "Repair capabilities added, timeline notification in case of need to migrate"
+  },
+  "2.1.1": {
+    "en": "minor fixes"
+  },
+  "2.1.2": {
+    "en": "minor fix"
+  },
+  "2.1.3": {
+    "en": "minor fix"
   }
 }
