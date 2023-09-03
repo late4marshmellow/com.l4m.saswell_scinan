@@ -46,5 +46,8 @@
   },
   "2.1.3": {
     "en": "minor fix"
+  },
+  "2.1.4": {
+    "en": "changed how api call works depending on device"
   }
 }
