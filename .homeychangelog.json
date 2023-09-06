@@ -55,5 +55,8 @@
   },
   "2.1.6": {
     "en": "added imei hashing, fixed so error fires one time."
+  },
+  "2.1.7": {
+    "en": "fixed bug"
   }
 }
