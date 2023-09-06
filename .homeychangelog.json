@@ -49,5 +49,11 @@
   },
   "2.1.4": {
     "en": "changed how api call works depending on device"
+  },
+  "2.1.5": {
+    "en": "fixes"
+  },
+  "2.1.6": {
+    "en": "added imei hashing, fixed so error fires one time."
   }
 }
