@@ -1,7 +1,10 @@
 node_modules/
 .vscode/*
 bacon.md
-errorcodes.txt
+lib/SaswellDevice.js
+lib/SaswellDriver.js
+lib/ScinanDevice.js
+lib/ScinanDriver.js
 
 # Added by Homey CLI
 /.homeybuild/
