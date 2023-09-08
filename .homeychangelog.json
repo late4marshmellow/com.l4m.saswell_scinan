@@ -61,5 +61,8 @@
   },
   "2.2.0": {
     "en": "Devices now turns unavilable if there is errors"
+  },
+  "2.2.1": {
+    "en": "fixed condition for imei generator"
   }
 }
