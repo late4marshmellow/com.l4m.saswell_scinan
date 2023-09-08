@@ -49,5 +49,17 @@
   },
   "2.1.4": {
     "en": "changed how api call works depending on device"
+  },
+  "2.1.5": {
+    "en": "fixes"
+  },
+  "2.1.6": {
+    "en": "added imei hashing, fixed so error fires one time."
+  },
+  "2.1.7": {
+    "en": "fixed bug"
+  },
+  "2.2.0": {
+    "en": "Devices now turns unavilable if there is errors"
   }
 }

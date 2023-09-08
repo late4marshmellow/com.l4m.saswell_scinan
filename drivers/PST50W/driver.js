@@ -1,8 +1,8 @@
 'use strict';
 
-const ScinanDriver = require('../../lib/ScinanDriver.js');
+const SaswellDriverV2 = require('../../lib/SaswellDriverV2.js');
 
-class PST50WDriver extends ScinanDriver {
+class PST50WDriver extends SaswellDriverV2 {
     static APIVersion = "1";
 }
 

@@ -1,8 +1,8 @@
 'use strict';
 
-const ScinanDevice = require('../../lib/ScinanDevice.js');
+const SaswellDeviceV2 = require('../../lib/SaswellDeviceV2.js');
 
-class SMARTE_THOERMOSTATDevice extends ScinanDevice {
+class SMARTE_THOERMOSTATDevice extends SaswellDeviceV2 {
     static APIVersion = "1";
 }
 
