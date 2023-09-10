@@ -73,5 +73,8 @@
   },
   "2.2.4": {
     "en": "repair flag for devices on APIv1"
+  },
+  "2.2.5": {
+    "en": "small fix and typos"
   }
 }
