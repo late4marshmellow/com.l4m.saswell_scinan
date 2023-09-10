@@ -64,5 +64,8 @@
   },
   "2.2.1": {
     "en": "fixed condition for imei generator"
+  },
+  "2.2.2": {
+    "en": "added checks if token has expired"
   }
 }
