@@ -67,5 +67,8 @@
   },
   "2.2.2": {
     "en": "added checks if token has expired"
+  },
+  "2.2.3": {
+    "en": "device should now not try to make API calls if credentials are wrong or missing, resulting in IP block by Saswell"
   }
 }
