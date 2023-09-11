@@ -88,5 +88,8 @@
   },
   "2.2.9": {
     "en": "minor fix"
+  },
+  "2.2.10": {
+    "en": "fixed bug in device repair"
   }
 }
