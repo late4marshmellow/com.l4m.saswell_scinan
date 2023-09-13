@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+</head>
+
+<body>
+    <header class="homey-header">
+        <h1 class="homey-title">Settings</h1>
+        <p class="homey-subtitle">Configure the interval for device refresh.</p>
+    </header>
+
+    <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend">Interval Settings</legend>
+
+        <div class="homey-form-group">
+            <label class="homey-form-label" for="u_interval">minutes</label>
+            <input class="homey-form-input" id="u_interval" type="number" min="5" max="59" value="15" />
+        </div>
+    </fieldset>
+
+    <button id="save" class="homey-button-primary-full">Save changes</button>
+
+    <script type="text/javascript">
+        function onHomeyReady(Homey) {
+            var u_intervalElement = document.getElementById("u_interval");
+            var saveElement = document.getElementById("save");
+
+            Homey.get("u_interval", function (err, value) {
+                if (err) return Homey.alert(err);
+                u_intervalElement.value = value || 15; // default to 15 if not set
+            });
+
+            saveElement.addEventListener("click", function (e) {
+                const intervalValue = parseInt(u_intervalElement.value, 10);
+
+                if (intervalValue < 5 || intervalValue > 59) {
+                    return Homey.alert("Please enter a valid interval between 5 and 59.");
+                }
+
+                Homey.set("u_interval", intervalValue, function (err) {
+                    if (err) return Homey.alert(err);
+                    Homey.alert("Settings saved successfully!");
+                });
+            });
+
+            Homey.ready();
+        }
+    </script>
+</body>
+
+</html>
