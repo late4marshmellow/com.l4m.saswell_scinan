@@ -8,6 +8,29 @@
     "en": "Scinan and Saswell Climate Control",
     "no": "Scinan og Saswell Klima Kontroller"
   },
+  "settings": [
+    {
+      "id": "group_id",
+      "type": "group",
+      "title": {
+        "en": "Refresh device time",
+        "no": "Intervall for henting av data"
+      },
+      "children": [
+        {
+          "id": "u_interval",
+          "type": "number",
+          "title": {
+            "en": "Minutes - for Saswell devices",
+            "no": "Minutter - for Saswell enheter"
+          },
+          "value": 15,
+          "min": 5,
+          "max": 59
+        }
+      ]
+    }
+  ],
   "description": {
     "en": "Support IoT devices/controllers using Saswell/Scinan API.",
     "no": "Støtter IoT apparater med Saswell/Scinan API. "
