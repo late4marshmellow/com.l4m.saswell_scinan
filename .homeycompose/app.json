@@ -1,6 +1,6 @@
 {
   "id": "com.scinan.api",
-  "version": "2.2.10",
+  "version": "2.3.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -30,7 +30,6 @@
       ]
     }
   ],
-
   "description": {
     "en": "Support IoT devices/controllers using Saswell/Scinan API.",
     "no": "Støtter IoT apparater med Saswell/Scinan API. "

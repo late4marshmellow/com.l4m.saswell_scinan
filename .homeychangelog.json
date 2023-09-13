@@ -91,5 +91,8 @@
   },
   "2.2.10": {
     "en": "fixed bug in device repair"
+  },
+  "2.3.0": {
+    "en": "deviceupdates to be shared by all devices - reducing uneccessary api calls to saswell"
   }
 }
