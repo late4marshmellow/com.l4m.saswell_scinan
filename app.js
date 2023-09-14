@@ -20,6 +20,14 @@ class ScinanApp extends Homey.App {
     if (!this.homey.settings.get('u_interval')){this.homey.settings.set('u_interval', 15)}
     this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
     this.APIv2UpdateInterval();
+    this.homey.settings.on('set', (key, value) => {
+      this.log('event setting set in app')
+      if (key === `APIv2 result_code <> 0` && value === false) {
+        this.log('running APIv2 after Event"')
+
+          this.APIv2();
+      }
+    });
 
   }
   APIv2UpdateInterval() {
@@ -38,7 +46,7 @@ class ScinanApp extends Homey.App {
 
   async APIv2() {
       if ((this.homey.settings.get('APIv2 result_code <> 0')) === true) {
-          this.log('APIv2 result_code <> 0');
+          this.log('APIv2 result_code is <> 0 stopping API call');
           
         return;
       }
@@ -73,24 +81,37 @@ class ScinanApp extends Homey.App {
           };
   
           const response = await fetch(LIST_URL_V2, requestOptions_list);
+          this.log('fetching updates')
           if (!response.ok) {
               this.log('Error response:', response);
               if (response.status === 404) {
                 this.homey.settings.set('last APIv2 result', JSON.stringify({ result_code: "404", result_data: [] }));
                 this.log("last apiv2 response 404: " + this.homey.settings.get('last APIv2 result'));
-              }else{
-                this.homey.settings.set('last APIv2 result', response);
-                this.log("last apiv2 response else: " + this.homey.settings.get('last APIv2 result'));
-
-            }
+              }
+             
 
               throw new Error('Error response from API');
             }
-            this.homey.settings.set('last APIv2 result', response);
-            const result = await response.json();
-            this.log("last apiv2 response: " + this.homey.settings.get('last APIv2 result'))
+            if (response.headers.get('content-type').includes('application/json')) {
+              this.log('setting as json')
+              const responseData = await response.json();
+              this.homey.settings.set('last APIv2 result', JSON.stringify(responseData));
+              if (!(responseData.result_code === "0")) {
+                this.homey.settings.set('APIv2 result_code <> 0', true);
+                this.log('APIv2 result_code is <> 0 stopping further API calls');
+              }
+          } else {
+              this.log('setting as text')
+              const responseText = await response.text();
+              this.homey.settings.set('last APIv2 result', responseText);
+          
+          }
+            this.log('response status: ' + response.status)
+            //this.homey.settings.set('last APIv2 result', response);
+            this.log("last apiv2 response: " + JSON.stringify(this.homey.settings.get('last APIv2 result')));
+
             //if result_code is anything else than 0 make device unavailable
-            if (!(result.result_code === "0")) {this.homey.settings.set('APIv2 result_code <> 0', true)}
+            
           }
           catch (error) {
               this.log(error);
