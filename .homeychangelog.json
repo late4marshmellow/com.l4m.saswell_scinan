@@ -94,5 +94,8 @@
   },
   "2.3.0": {
     "en": "deviceupdates to be shared by all devices - reducing uneccessary api calls to saswell"
+  },
+  "2.3.1": {
+    "en": "fixed device-app relation on updates"
   }
 }
