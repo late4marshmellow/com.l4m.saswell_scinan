@@ -95,7 +95,7 @@ class ScinanApp extends Homey.App {
             if (response.headers.get('content-type').includes('application/json')) {
               this.log('setting as json')
               const responseData = await response.json();
-              this.homey.settings.set('last APIv2 result', JSON.stringify(responseData));
+              this.homey.settings.set('last APIv2 result', responseData);
               if (!(responseData.result_code === "0")) {
                 this.homey.settings.set('APIv2 result_code <> 0', true);
                 this.log('APIv2 result_code is <> 0 stopping further API calls');
