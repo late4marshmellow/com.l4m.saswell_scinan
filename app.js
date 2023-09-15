@@ -2,7 +2,7 @@ const Homey = require('homey');
 const fetch = require('node-fetch');
 const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign } = require('./lib/Utils');
 const { LIST_URL_V2, COMPANY_ID, APP_KEY } = require('./lib/Constants');
-const { APIv2 } = require('./lib/api');
+//const { APIv2 } = require('./lib/api');
 
 class ScinanApp extends Homey.App {
   async onInit() {
@@ -45,8 +45,7 @@ class ScinanApp extends Homey.App {
 
   }
   
-  //Moved to api.js
-  /*
+
   async APIv2() {
       if ((this.homey.settings.get('APIv2 result_code <> 0')) === true) {
           this.log('APIv2 result_code is <> 0 stopping API call');
@@ -122,7 +121,7 @@ class ScinanApp extends Homey.App {
               
           }
       }
-  */
+  
 
 
 }
