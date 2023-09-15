@@ -94,5 +94,20 @@
   },
   "2.3.0": {
     "en": "deviceupdates to be shared by all devices - reducing uneccessary api calls to saswell"
+  },
+  "2.3.1": {
+    "en": "fixed device-app relation on updates"
+  },
+  "2.3.2": {
+    "en": "minor fix"
+  },
+  "2.3.3": {
+    "en": "minor fix"
+  },
+  "2.3.4": {
+    "en": "fix api result"
+  },
+  "2.3.5": {
+    "en": "APIv2 calls are now done once for every v2 device, password and user, and refresh interval are now set in app settings"
   }
 }
