@@ -21,7 +21,7 @@ class ScinanApp extends Homey.App {
     this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
     this.APIv2UpdateInterval();
     this.homey.settings.on('set', (key, value) => {
-      this.log('event setting set in app')
+      //this.log('event setting set in app')
       if (key === `APIv2 result_code <> 0` && value === false) {
         this.log('running APIv2 after Event"')
 
