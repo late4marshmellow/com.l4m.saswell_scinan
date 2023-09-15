@@ -109,5 +109,8 @@
   },
   "2.3.5": {
     "en": "APIv2 calls are now done once for every v2 device, password and user, and refresh interval are now set in app settings"
+  },
+  "2.3.6": {
+    "en": "minor fix"
   }
 }
