@@ -97,5 +97,8 @@
   },
   "2.3.1": {
     "en": "fixed device-app relation on updates"
+  },
+  "2.3.2": {
+    "en": "minor fix"
   }
 }
