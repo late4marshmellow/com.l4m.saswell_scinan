@@ -20,11 +20,33 @@
         </div>
     </fieldset>
 
+    <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend">Saswell API Settings</legend>
+
+        <div class="homey-form-group">
+            <label class="homey-form-label" for="usernamev2">Username</label>
+            <input class="homey-form-input" id="usernamev2" type="text" />
+        </div>
+
+        <div class="homey-form-group">
+            <label class="homey-form-label" for="passwordv2">Password</label>
+            <input class="homey-form-input" id="passwordv2" type="password" />
+        </div>
+
+        <div class="homey-form-group">
+            <label class="homey-form-label" for="tokenv2">Current Token</label>
+            <input class="homey-form-input" id="tokenv2" type="text" disabled />
+        </div>
+    </fieldset>
+
     <button id="save" class="homey-button-primary-full">Save changes</button>
 
     <script type="text/javascript">
         function onHomeyReady(Homey) {
             var u_intervalElement = document.getElementById("u_interval");
+            var usernamev2Element = document.getElementById("usernamev2");
+            var passwordv2Element = document.getElementById("passwordv2");
+            var tokenv2Element = document.getElementById("tokenv2");  
             var saveElement = document.getElementById("save");
 
             Homey.get("u_interval", function (err, value) {
@@ -32,8 +54,29 @@
                 u_intervalElement.value = value || 15; // default to 15 if not set
             });
 
+            Homey.get("usernamev2", function (err, value) {
+                if (err) return Homey.alert(err);
+                usernamev2Element.value = value || ''; // default to blank if not set
+            });
+
+            Homey.get("passwordv2", function (err, value) {
+                if (err) return Homey.alert(err);
+                passwordv2Element.value = value || ''; // default to blank if not set
+            });
+
+            Homey.get("tokenv2", function (err, value) {
+                if (err) return Homey.alert(err);
+                var maskedValue = value 
+                    ? '*'.repeat(value.length - 6) + value.slice(-6) // mask all but last 6 chars
+                    : ''; // default to blank if not set
+                tokenv2Element.value = maskedValue;
+            });
+
+
             saveElement.addEventListener("click", function (e) {
                 const intervalValue = parseInt(u_intervalElement.value, 10);
+                const usernamev2Value = usernamev2Element.value;
+                const passwordv2Value = passwordv2Element.value;
 
                 if (intervalValue < 5 || intervalValue > 59) {
                     return Homey.alert("Please enter a valid interval between 5 and 59.");
@@ -41,7 +84,13 @@
 
                 Homey.set("u_interval", intervalValue, function (err) {
                     if (err) return Homey.alert(err);
-                    Homey.alert("Settings saved successfully!");
+                    Homey.set("usernamev2", usernamev2Value, function (err) {
+                        if (err) return Homey.alert(err);
+                        Homey.set("passwordv2", passwordv2Value, function (err) {
+                            if (err) return Homey.alert(err);
+                            Homey.alert("Settings saved successfully!");
+                        });
+                    });
                 });
             });
 
