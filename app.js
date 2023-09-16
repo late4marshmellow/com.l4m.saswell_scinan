@@ -95,15 +95,24 @@ class ScinanApp extends Homey.App {
               throw new Error('Error response from API');
             }
             if (response.headers.get('content-type').includes('application/json')) {
-              this.log('setting as json')
-              const responseData = await response.json();
-              this.homey.settings.set('last APIv2 result', responseData);
-              if (!(responseData.result_code === "0")) {
-                this.homey.settings.set('APIv2 result_code <> 0', true);
-                this.log('APIv2 result_code is <> 0 stopping further API calls');
-              }
-          } else {
-              this.log('setting as text')
+                this.log('setting response as json')
+                const responseData = await response.json();
+                this.homey.settings.set('last APIv2 result', responseData);
+                
+                if (!(responseData.result_code === "0")) {
+                    if (responseData.result_code === "10003") {  // Token Expired
+                        // Reauthorize to get a new token
+                        try {
+                            await this.reauthorize();
+                            // Retry the API call with the new token
+                            return await this.APIv2();
+                        } catch (error) {
+                            console.error("Reauthorization failed", error);
+                        }
+                    }
+                }
+            } else {
+              this.log('setting response as text')
               const responseText = await response.text();
               this.homey.settings.set('last APIv2 result', responseText);
           
@@ -121,7 +130,81 @@ class ScinanApp extends Homey.App {
               
           }
       }
+
+    
+      
+  async reauthorize() {
+      const username = this.homey.settings.get('usernamev2');
+      const md5Password = this.homey.settings.get('md5Password');
+      const timestamp = getTimestamp();
+      const params_auth = {
+          account: username,
+          app_key: APP_KEY,
+          company_id: COMPANY_ID,
+          imei: this.IMEI,
+          password: md5Password,
+          timestamp: timestamp,
+      };
+      const sign = createMD5HashForSign(params_auth);
+      params_auth.sign = sign;
   
+      let urlencoded_auth = new URLSearchParams();
+      for (let [key, value] of Object.entries(params_auth)) {
+          urlencoded_auth.append(key, value);
+      }
+  
+      const requestOptions_auth = {
+          method: 'POST',
+          headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "User-Agent": USER_AGENT,
+          },
+          body: urlencoded_auth,
+          redirect: 'follow',
+      };
+  
+      const response = await fetch(AUTHORIZATION_URL_V2, requestOptions_auth);
+      if (!response.ok) {
+          throw new Error(`Failed to get token:  ${response.statusText}`);
+      }
+  
+      const contentType = response.headers.get("content-type");
+      let token;
+  
+      if (contentType && contentType.includes("application/json")) {
+          // Handle JSON response
+          const data = await response.json();
+         //this.log(data)
+          token = data.resultData.access_token;
+      } else {
+          // Handle HTML response
+          const html = await response.text();
+          const start = html.indexOf('token:');
+          const end = html.indexOf('\r', start);
+          token = html.substring(start + 6, end);
+      }
+      this.homey.settings.set('tokenv2', token);
+          // Store the current time/date as the last token refresh time
+    const currentTime = new Date().toISOString();
+    this.homey.settings.set('lastTokenRefresh', currentTime);
+
+     // Clear any existing timeout
+    if (reauthorize.reauthTimeout) {
+      clearTimeout(reauthorize.reauthTimeout);
+  }
+
+  // Set a new timeout to reauthorize 1 hour before the token expires
+  reauthorize.reauthTimeout = setTimeout(() => {
+      this.reauthorize();
+  }, (86400 - 3600) * 1000);  // Convert seconds to milliseconds
+
+
+      return token;
+  }
+
+    
+    
+    
 
 
 }
