@@ -112,5 +112,8 @@
   },
   "2.3.6": {
     "en": "minor fix"
+  },
+  "2.3.7": {
+    "en": "Token should now refresh automatically"
   }
 }
