@@ -94,13 +94,14 @@ class ScinanApp extends Homey.App {
 
               throw new Error('Error response from API');
             }
-            if (response.headers.get('content-type').includes('application/json')) {
+            //if (response.headers.get('content-type').includes('application/json')) {
                 this.log('setting response as json')
                 const responseData = await response.json();
                 this.homey.settings.set('last APIv2 result', responseData);
                 
                 if (!(responseData.result_code === "0")) {
-                    if (responseData.result_code === "10003") {  // Token Expired
+                  //Token expired
+                    if (responseData.result_code === "10003") {  
                         // Reauthorize to get a new token
                         try {
                             await this.reauthorize();
@@ -110,13 +111,14 @@ class ScinanApp extends Homey.App {
                             console.error("Reauthorization failed", error);
                         }
                     }
+                    
                 }
-            } else {
-              this.log('setting response as text')
-              const responseText = await response.text();
-              this.homey.settings.set('last APIv2 result', responseText);
+            /*} else {
+            //  this.log('setting response as text')
+            //  const responseText = await response.text();
+            //  this.homey.settings.set('last APIv2 result', responseText);
           
-          }
+            }*/
             this.log('response status: ' + response.status)
             //this.homey.settings.set('last APIv2 result', response);
             this.log("last apiv2 response: " + JSON.stringify(this.homey.settings.get('last APIv2 result')));
