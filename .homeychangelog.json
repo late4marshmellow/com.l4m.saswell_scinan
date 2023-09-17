@@ -115,5 +115,8 @@
   },
   "2.3.7": {
     "en": "Token should now refresh automatically"
+  },
+  "2.3.8": {
+    "en": "fixes"
   }
 }

@@ -21,14 +21,19 @@ class ScinanApp extends Homey.App {
     if (!this.homey.settings.get('u_interval')){this.homey.settings.set('u_interval', 15)}
     this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
     this.APIv2UpdateInterval();
+    this.log('intiate listner...')
+    this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
     this.homey.settings.on('set', (key, value) => {
-      //this.log('event setting set in app')
-      if (key === `APIv2 result_code <> 0` && value === false) {
-        this.log('running APIv2 after Event"')
+      if ((key === "APIv2 result_code <> 0" && value === false) || 
+         (key === "RefreshDevices" && value === true)) {
 
-          this.APIv2();
-      }
+        this.log('Running APIv2 after Event');
+       this.APIv2();
+    }
     });
+
+    this.log('listner intiated...')
+
 
   }
   APIv2UpdateInterval() {
@@ -122,7 +127,11 @@ class ScinanApp extends Homey.App {
             this.log('response status: ' + response.status)
             //this.homey.settings.set('last APIv2 result', response);
             this.log("last apiv2 response: " + JSON.stringify(this.homey.settings.get('last APIv2 result')));
-
+            this.log('refresh set to: ' + this.homey.settings.get('RefreshDevices'))
+            this.homey.settings.set('RefreshDevices', false);
+            this.log('refresh set to: ' + this.homey.settings.get('RefreshDevices'))
+            return responseData;
+            
             //if result_code is anything else than 0 make device unavailable
             
           }
@@ -212,3 +221,4 @@ class ScinanApp extends Homey.App {
 }
 
 module.exports = ScinanApp;
+module.exports.APIv2 = ScinanApp.prototype.APIv2;
