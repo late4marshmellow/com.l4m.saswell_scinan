@@ -1,8 +1,7 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
 const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign } = require('./lib/Utils');
-const { LIST_URL_V2, COMPANY_ID, APP_KEY } = require('./lib/Constants');
-//const { APIv2 } = require('./lib/api');
+const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2} = require('./lib/Constants');
 
 class ScinanApp extends Homey.App {
   async onInit() {
@@ -21,8 +20,8 @@ class ScinanApp extends Homey.App {
     if (!this.homey.settings.get('u_interval')){this.homey.settings.set('u_interval', 15)}
     this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
     this.APIv2UpdateInterval();
-    this.log('intiate listner...')
-    this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
+    //this.log('intiate listner...')
+    //this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
     this.homey.settings.on('set', (key, value) => {
       if ((key === "APIv2 result_code <> 0" && value === false) || 
          (key === "RefreshDevices" && value === true)) {
@@ -32,7 +31,7 @@ class ScinanApp extends Homey.App {
     }
     });
 
-    this.log('listner intiated...')
+    //this.log('listner intiated...')
 
 
   }
@@ -52,6 +51,9 @@ class ScinanApp extends Homey.App {
   
 
   async APIv2() {
+    if (this.homey.settings.get('lastTokenRefresh')){
+      this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
+    }
       if ((this.homey.settings.get('APIv2 result_code <> 0')) === true) {
           this.log('APIv2 result_code is <> 0 stopping API call');
           
@@ -76,12 +78,13 @@ class ScinanApp extends Homey.App {
           for (let [key, value] of Object.entries(params_list)) {
             urlencoded_list.append(key, value);
           }
-          urlencoded_list.append("sign", sign);
+          // this is added twice? | urlencoded_list.append("sign", sign);
   
           let requestOptions_list = {
             method: 'POST',
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
+              "User-Agent": USER_AGENT_V2,
             },
             body: urlencoded_list,
             redirect: 'follow',
@@ -105,8 +108,10 @@ class ScinanApp extends Homey.App {
                 this.homey.settings.set('last APIv2 result', responseData);
                 
                 if (!(responseData.result_code === "0")) {
+                  this.log('result_code <> 0')
                   //Token expired
                     if (responseData.result_code === "10003") {  
+                      this.log('result_code 10003 (expired token)')
                         // Reauthorize to get a new token
                         try {
                             await this.reauthorize();
@@ -145,6 +150,7 @@ class ScinanApp extends Homey.App {
     
       
   async reauthorize() {
+    this.log('reauthorizing')
       const username = this.homey.settings.get('usernamev2');
       const md5Password = this.homey.settings.get('md5Password');
       const timestamp = getTimestamp();
@@ -168,7 +174,7 @@ class ScinanApp extends Homey.App {
           method: 'POST',
           headers: {
               "Content-Type": "application/x-www-form-urlencoded",
-              "User-Agent": USER_AGENT,
+              "User-Agent": USER_AGENT_V2,
           },
           body: urlencoded_auth,
           redirect: 'follow',
@@ -209,7 +215,7 @@ class ScinanApp extends Homey.App {
       this.reauthorize();
   }, (86400 - 3600) * 1000);  // Convert seconds to milliseconds
 
-
+this.log('reauthorize run sucessfully')
       return token;
   }
 
@@ -220,5 +226,5 @@ class ScinanApp extends Homey.App {
 
 }
 
+
 module.exports = ScinanApp;
-module.exports.APIv2 = ScinanApp.prototype.APIv2;
