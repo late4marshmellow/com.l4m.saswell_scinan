@@ -121,5 +121,8 @@
   },
   "2.3.9": {
     "en": "fixes"
+  },
+  "2.3.10": {
+    "en": "Repair, should no longer be done for every device on same driver. Token should now refresh automatically, Device discovery fixed, should only be found once. and multiple minor fixes"
   }
 }
