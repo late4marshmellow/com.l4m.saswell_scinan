@@ -2,6 +2,8 @@ const Homey = require('homey');
 const fetch = require('node-fetch');
 const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign, tokenRepair, setMD5Password } = require('./lib/Utils');
 const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2, AUTHORIZATION_URL_V2} = require('./lib/Constants');
+const reauthState = { reauthTimeout: null };
+
 
 class ScinanApp extends Homey.App {
   async onInit() {
@@ -216,16 +218,17 @@ class ScinanApp extends Homey.App {
           // Store the current time/date as the last token refresh time
     const currentTime = new Date().toISOString();
     this.homey.settings.set('lastTokenRefresh', currentTime);
+    let expiresIn = Number(data.resultData.expires_in)
 
-     // Clear any existing timeout
-    if (reauthorize.reauthTimeout) {
-      clearTimeout(reauthorize.reauthTimeout);
-  }
+    // Clear any existing timeout
+    if (reauthState.reauthTimeout) {
+      clearTimeout(reauthState.reauthTimeout);
+    }
 
-  // Set a new timeout to reauthorize 1 hour before the token expires
-  reauthorize.reauthTimeout = setTimeout(() => {
-      this.reauthorize();
-  }, (86400 - 3600) * 1000);  // Convert seconds to milliseconds
+    // Set a new timeout to reauthorize 1 hour before the token expires
+    reauthState.reauthTimeout = setTimeout(() => {
+        this.reauthorize();
+    }, (expiresIn - 3600) * 1000);  // Convert seconds to milliseconds
 
 this.log('reauthorize run sucessfully')
       return token;
