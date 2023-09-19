@@ -124,5 +124,8 @@
   },
   "2.3.10": {
     "en": "Repair, should no longer be done for every device on same driver. Token should now refresh automatically, Device discovery fixed, should only be found once. and multiple minor fixes"
+  },
+  "2.4.0": {
+    "en": "adding devices no longer require credentials if its already set. "
   }
 }
