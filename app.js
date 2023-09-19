@@ -1,14 +1,12 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
-const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign } = require('./lib/Utils');
+const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign, tokenRepair, setMD5Password } = require('./lib/Utils');
 const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2} = require('./lib/Constants');
 
 class ScinanApp extends Homey.App {
   async onInit() {
-      if ((this.homey.settings.get('token')) && (!(this.homey.settings.get('tokenv1')))){
-      this.homey.settings.set('tokenv1', this.homey.settings.get('token'));
-      this.homey.settings.unset('token');
-    }
+    await tokenRepair(this.homey);
+    await setMD5Password(this.homey);
     this.log('Successfully init Scinan version:', Homey.manifest.version);
     //if settings.get is null or blank run this snippet
     if (!this.homey.settings.get('macToImeiMD5')) {

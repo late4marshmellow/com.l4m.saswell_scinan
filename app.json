@@ -452,6 +452,10 @@
       },
       "pair": [
         {
+          "id": "loading",
+          "template": "loading"
+        },
+        {
           "id": "start",
           "template": "login_credentials",
           "navigation": {
@@ -469,7 +473,8 @@
           "id": "list_my_devices",
           "template": "list_devices",
           "navigation": {
-            "next": "add_my_devices"
+            "next": "add_my_devices",
+            "prev": "start"
           }
         },
         {
