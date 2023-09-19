@@ -7,8 +7,9 @@ class ScinanApp extends Homey.App {
   async onInit() {
     await tokenRepair(this.homey);
     await setMD5Password(this.homey);
-    this.log('Successfully init Scinan version:', Homey.manifest.version);
-    //if settings.get is null or blank run this snippet
+    //this.api = await HomeyAPI.forCurrentHomey();
+    //this.api.post('/hashPassword', this.onHashPassword.bind(this));
+
     if (!this.homey.settings.get('macToImeiMD5')) {
     this.log('starting mactoimei...');   
     const imei = await macToImei();
@@ -34,9 +35,18 @@ class ScinanApp extends Homey.App {
     });
 
     //this.log('listner intiated...')
-
+    this.log('Successfully init Scinan version:', Homey.manifest.version);
 
   }
+
+  //function for app settings
+  async onHashPassword(body) {
+    const password = body.password;
+    const hashedPassword = createMD5Hash(password);
+    return { hashedPassword };
+  }
+
+
   APIv2UpdateInterval() {
     this.APIv2();
     this.interval = setInterval(async () => {

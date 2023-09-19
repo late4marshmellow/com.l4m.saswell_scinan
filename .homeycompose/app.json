@@ -7,6 +7,13 @@
     "en": "Scinan and Saswell Climate Control",
     "no": "Scinan og Saswell Klima Kontroller"
   },
+  "api": [
+    {
+      "id": "hashPassword",
+      "path": "/hashPassword",
+      "method": "post"
+    }
+  ],
   "settings": [
     {
       "id": "group_id",
