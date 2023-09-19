@@ -130,5 +130,8 @@
   },
   "2.4.1": {
     "en": "patched password storage behaviour"
+  },
+  "2.4.2": {
+    "en": "changed app picture"
   }
 }
