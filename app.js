@@ -5,6 +5,10 @@ const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2} = require('./lib/Const
 
 class ScinanApp extends Homey.App {
   async onInit() {
+      if ((this.homey.settings.get('token')) && (!(this.homey.settings.get('tokenv1')))){
+      this.homey.settings.set('tokenv1', this.homey.settings.get('token'));
+      this.homey.settings.unset('token');
+    }
     this.log('Successfully init Scinan version:', Homey.manifest.version);
     //if settings.get is null or blank run this snippet
     if (!this.homey.settings.get('macToImeiMD5')) {
