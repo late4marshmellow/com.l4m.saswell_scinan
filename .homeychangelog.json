@@ -127,5 +127,8 @@
   },
   "2.4.0": {
     "en": "adding devices no longer require credentials if its already set. "
+  },
+  "2.4.1": {
+    "en": "patched password storage behaviour"
   }
 }
