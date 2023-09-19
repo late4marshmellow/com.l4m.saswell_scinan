@@ -1,7 +1,7 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
 const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign, tokenRepair, setMD5Password } = require('./lib/Utils');
-const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2} = require('./lib/Constants');
+const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2, AUTHORIZATION_URL_V2} = require('./lib/Constants');
 
 class ScinanApp extends Homey.App {
   async onInit() {
