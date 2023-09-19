@@ -133,5 +133,8 @@
   },
   "2.4.2": {
     "en": "changed app picture"
+  },
+  "2.4.3": {
+    "en": "removed some excess logging"
   }
 }
