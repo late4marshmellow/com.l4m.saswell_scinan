@@ -145,5 +145,8 @@
   },
   "2.4.6": {
     "en": "misc fixes"
+  },
+  "2.4.7": {
+    "en": "removed device logging"
   }
 }
