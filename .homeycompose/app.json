@@ -61,9 +61,9 @@
   },
   "permissions": [],
   "images": {
-    "xlarge": "/assets/images/xlarge.png",
-    "large": "/assets/images/large.png",
-    "small": "/assets/images/small.png"
+    "xlarge": "/assets/images/xlarge_result.jpg",
+    "large": "/assets/images/large_result.jpg",
+    "small": "/assets/images/small_result.jpg"
   },
   "author": {
     "name": "late4marshmellow",

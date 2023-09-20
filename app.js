@@ -1,7 +1,7 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
 const { macToImei, getTimestamp, createMD5Hash, createMD5HashForSign, tokenRepair, setMD5Password } = require('./lib/Utils');
-const { LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2, AUTHORIZATION_URL_V2} = require('./lib/Constants');
+const { ERROR_CODES, LIST_URL_V2, COMPANY_ID, APP_KEY , USER_AGENT_V2, AUTHORIZATION_URL_V2} = require('./lib/Constants');
 const reauthState = { reauthTimeout: null };
 
 
@@ -16,7 +16,7 @@ class ScinanApp extends Homey.App {
     this.log('starting mactoimei...');   
     const imei = await macToImei();
     this.log('set mactoimei...');   
-    const imeiHash = createMD5Hash(imei, true);
+    const imeiHash = await createMD5Hash(imei, true);
     this.log('set imeiHash...');
     this.homey.settings.set('macToImeiMD5', imeiHash);
 
@@ -27,14 +27,14 @@ class ScinanApp extends Homey.App {
     this.APIv2UpdateInterval();
     //this.log('intiate listner...')
     //this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
-    this.homey.settings.on('set', (key, value) => {
+    /*this.homey.settings.on('set', (key, value) => {
       if ((key === "APIv2 result_code <> 0" && value === false) || 
          (key === "RefreshDevices" && value === true)) {
 
         this.log('Running APIv2 after Event');
        this.APIv2();
     }
-    });
+    });*/
 
     //this.log('listner intiated...')
     this.log('Successfully init Scinan version:', Homey.manifest.version);
@@ -44,7 +44,7 @@ class ScinanApp extends Homey.App {
   //function for app settings
   async onHashPassword(body) {
     const password = body.password;
-    const hashedPassword = createMD5Hash(password);
+    const hashedPassword = await createMD5Hash(password);
     return { hashedPassword };
   }
 
@@ -84,7 +84,7 @@ class ScinanApp extends Homey.App {
         };
   
         // Generate the sign using the utility function from Utils.js
-        const sign = createMD5HashForSign(params_list);
+        const sign = await createMD5HashForSign(params_list);
         params_list.sign = sign;
   
         try {
@@ -92,7 +92,8 @@ class ScinanApp extends Homey.App {
           for (let [key, value] of Object.entries(params_list)) {
             urlencoded_list.append(key, value);
           }
-          // this is added twice? | urlencoded_list.append("sign", sign);
+          // this is added twice? | 
+            urlencoded_list.append("sign", sign);
   
           let requestOptions_list = {
             method: 'POST',
@@ -103,9 +104,11 @@ class ScinanApp extends Homey.App {
             body: urlencoded_list,
             redirect: 'follow',
           };
-  
-          const response = await fetch(LIST_URL_V2, requestOptions_list);
+
           this.log('fetching updates')
+          const response = await fetch(LIST_URL_V2, requestOptions_list);
+          this.log('response status: ' + response.status);
+
           if (!response.ok) {
               this.log('Error response:', response);
               if (response.status === 404) {
@@ -116,14 +119,15 @@ class ScinanApp extends Homey.App {
 
               throw new Error('Error response from API');
             }
+
             //if (response.headers.get('content-type').includes('application/json')) {
-                this.log('setting response as json')
+                //this.log('setting response as json')
                 const responseData = await response.json();
                 this.homey.settings.set('last APIv2 result', responseData);
                 
                 if (!(responseData.result_code === "0")) {
                   this.log('result_code <> 0')
-                  //Token expired
+                  this.homey.settings.set('APIv2 result_code <> 0', true)
                     if (responseData.result_code === "10003") {  
                       this.log('result_code 10003 (expired token)')
                         // Reauthorize to get a new token
@@ -143,12 +147,9 @@ class ScinanApp extends Homey.App {
             //  this.homey.settings.set('last APIv2 result', responseText);
           
             }*/
-            this.log('response status: ' + response.status)
             //this.homey.settings.set('last APIv2 result', response);
-            this.log("last apiv2 response: " + JSON.stringify(this.homey.settings.get('last APIv2 result')));
-            this.log('refresh set to: ' + this.homey.settings.get('RefreshDevices'))
-            this.homey.settings.set('RefreshDevices', false);
-            this.log('refresh set to: ' + this.homey.settings.get('RefreshDevices'))
+
+            this.log("last apiv2 response: " + 'result_code: ' + responseData.result_code + ' - description: ' + ERROR_CODES[responseData.result_code]);
             return responseData;
             
             //if result_code is anything else than 0 make device unavailable
@@ -176,14 +177,15 @@ class ScinanApp extends Homey.App {
           password: md5Password,
           timestamp: timestamp,
       };
-      const sign = createMD5HashForSign(params_auth);
+      const sign = await createMD5HashForSign(params_auth);
       params_auth.sign = sign;
   
       let urlencoded_auth = new URLSearchParams();
       for (let [key, value] of Object.entries(params_auth)) {
           urlencoded_auth.append(key, value);
       }
-  
+      urlencoded_auth.append("sign", sign);
+
       const requestOptions_auth = {
           method: 'POST',
           headers: {
@@ -199,26 +201,35 @@ class ScinanApp extends Homey.App {
           throw new Error(`Failed to get token:  ${response.statusText}`);
       }
   
-      const contentType = response.headers.get("content-type");
       let token;
-  
-      if (contentType && contentType.includes("application/json")) {
-          // Handle JSON response
-          const data = await response.json();
-         //this.log(data)
-          token = data.resultData.access_token;
-      } else {
-          // Handle HTML response
-          const html = await response.text();
-          const start = html.indexOf('token:');
-          const end = html.indexOf('\r', start);
-          token = html.substring(start + 6, end);
+      let data;
+      let expiresIn;
+      
+      try {
+          data = await response.json();
+          if (data && data.resultData && data.resultData.access_token) {
+              token = data.resultData.access_token;
+              expiresIn = Number(data.resultData.expires_in);
+          } else {
+              // Handle HTML response
+              const html = await response.text();
+              const start = html.indexOf('token:');
+              const end = html.indexOf('\r', start);
+              token = html.substring(start + 6, end);
+          }
+      } catch (error) {
+          // Handle the error here
+          console.error("Error processing the response:", error);
       }
-      this.homey.settings.set('tokenv2', token);
+      //log the function name and token
+      this.log('reauthorize: ' + token);
           // Store the current time/date as the last token refresh time
     const currentTime = new Date().toISOString();
     this.homey.settings.set('lastTokenRefresh', currentTime);
-    let expiresIn = Number(data.resultData.expires_in)
+    this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
+    
+    expiresIn = expiresIn || 1000 * 60 * 30;  // Default to 30 minutes
+    this.log('expires in: ' + expiresIn + ' seconds')
 
     // Clear any existing timeout
     if (reauthState.reauthTimeout) {
@@ -230,7 +241,10 @@ class ScinanApp extends Homey.App {
         this.reauthorize();
     }, (expiresIn - 3600) * 1000);  // Convert seconds to milliseconds
 
-this.log('reauthorize run sucessfully')
+    this.log('reauthorize run sucessfully');
+    this.homey.settings.set('tokenv2', token);
+    //log the function name and token
+    this.log('reauthorize: ' + this.homey.settings.get('tokenv2'));
       return token;
   }
 
