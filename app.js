@@ -57,7 +57,6 @@ class ScinanApp extends Homey.App {
     }
 
  
-  // remember to clear the interval when your component unmounts or application closes
   cleanup() {
       clearInterval(this.interval);
 
@@ -83,7 +82,6 @@ class ScinanApp extends Homey.App {
           token: this.homey.settings.get('tokenv2'),
         };
   
-        // Generate the sign using the utility function from Utils.js
         const sign = await createMD5HashForSign(params_list);
         params_list.sign = sign;
   
@@ -92,8 +90,7 @@ class ScinanApp extends Homey.App {
           for (let [key, value] of Object.entries(params_list)) {
             urlencoded_list.append(key, value);
           }
-          // this is added twice? | 
-            urlencoded_list.append("sign", sign);
+          // this is added twice? | urlencoded_list.append("sign", sign);
   
           let requestOptions_list = {
             method: 'POST',
@@ -133,7 +130,7 @@ class ScinanApp extends Homey.App {
                         // Reauthorize to get a new token
                         try {
                             await this.reauthorize();
-                            // Retry the API call with the new token
+                            this.homey.settings.set('APIv2 result_code <> 0', true)
                             return await this.APIv2();
                         } catch (error) {
                             console.error("Reauthorization failed", error);
@@ -141,19 +138,10 @@ class ScinanApp extends Homey.App {
                     }
                     
                 }
-            /*} else {
-            //  this.log('setting response as text')
-            //  const responseText = await response.text();
-            //  this.homey.settings.set('last APIv2 result', responseText);
-          
-            }*/
-            //this.homey.settings.set('last APIv2 result', response);
 
             this.log("last apiv2 response: " + 'result_code: ' + responseData.result_code + ' - description: ' + ERROR_CODES[responseData.result_code]);
             return responseData;
-            
-            //if result_code is anything else than 0 make device unavailable
-            
+                        
           }
           catch (error) {
               this.log(error);
@@ -184,7 +172,7 @@ class ScinanApp extends Homey.App {
       for (let [key, value] of Object.entries(params_auth)) {
           urlencoded_auth.append(key, value);
       }
-      urlencoded_auth.append("sign", sign);
+      // this is added twice? | urlencoded_auth.append("sign", sign);
 
       const requestOptions_auth = {
           method: 'POST',
@@ -218,12 +206,9 @@ class ScinanApp extends Homey.App {
               token = html.substring(start + 6, end);
           }
       } catch (error) {
-          // Handle the error here
           console.error("Error processing the response:", error);
       }
-      //log the function name and token
-      this.log('reauthorize: ' + token);
-          // Store the current time/date as the last token refresh time
+    // Store the current time/date as the last token refresh time
     const currentTime = new Date().toISOString();
     this.homey.settings.set('lastTokenRefresh', currentTime);
     this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
