@@ -109,5 +109,44 @@
   },
   "2.3.5": {
     "en": "APIv2 calls are now done once for every v2 device, password and user, and refresh interval are now set in app settings"
+  },
+  "2.3.6": {
+    "en": "minor fix"
+  },
+  "2.3.7": {
+    "en": "Token should now refresh automatically"
+  },
+  "2.3.8": {
+    "en": "fixes"
+  },
+  "2.3.9": {
+    "en": "fixes"
+  },
+  "2.3.10": {
+    "en": "Repair, should no longer be done for every device on same driver. Token should now refresh automatically, Device discovery fixed, should only be found once. and multiple minor fixes"
+  },
+  "2.4.0": {
+    "en": "adding devices no longer require credentials if its already set. "
+  },
+  "2.4.1": {
+    "en": "patched password storage behaviour"
+  },
+  "2.4.2": {
+    "en": "changed app picture"
+  },
+  "2.4.3": {
+    "en": "removed some excess logging"
+  },
+  "2.4.4": {
+    "en": "minor fix"
+  },
+  "2.4.5": {
+    "en": "fixed reauth timer"
+  },
+  "2.4.6": {
+    "en": "misc fixes"
+  },
+  "2.4.7": {
+    "en": "removed device logging"
   }
 }

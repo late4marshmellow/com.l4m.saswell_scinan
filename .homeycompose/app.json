@@ -1,12 +1,19 @@
 {
   "id": "com.scinan.api",
-  "version": "2.3.5",
+  "version": "2.4.7",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
     "en": "Scinan and Saswell Climate Control",
     "no": "Scinan og Saswell Klima Kontroller"
   },
+  "api": [
+    {
+      "id": "hashPassword",
+      "path": "/hashPassword",
+      "method": "post"
+    }
+  ],
   "settings": [
     {
       "id": "group_id",
@@ -54,8 +61,9 @@
   },
   "permissions": [],
   "images": {
-    "large": "/assets/images/large.jpg",
-    "small": "/assets/images/small.jpg"
+    "xlarge": "/assets/images/xlarge_result.jpg",
+    "large": "/assets/images/large_result.jpg",
+    "small": "/assets/images/small_result.jpg"
   },
   "author": {
     "name": "late4marshmellow",
@@ -87,5 +95,6 @@
     ]
   },
   "source": "https://github.com/late4marshmellow/com.scinan.api/tree/com.saswell.api",
-  "homeyCommunityTopicId": 88393
+  "homeyCommunityTopicId": 88393,
+  "support": "mailto:late4marshmellow@tuta.io"
 }
