@@ -142,5 +142,8 @@
   },
   "2.4.5": {
     "en": "fixed reauth timer"
+  },
+  "2.4.6": {
+    "en": "misc fixes"
   }
 }
