@@ -130,7 +130,7 @@ class ScinanApp extends Homey.App {
                         // Reauthorize to get a new token
                         try {
                             await this.reauthorize();
-                            this.homey.settings.set('APIv2 result_code <> 0', true)
+                            //this.homey.settings.set('APIv2 result_code <> 0', false)
                             return await this.APIv2();
                         } catch (error) {
                             console.error("Reauthorization failed", error);
@@ -225,12 +225,17 @@ class ScinanApp extends Homey.App {
     reauthState.reauthTimeout = setTimeout(() => {
         this.reauthorize();
     }, (expiresIn - 3600) * 1000);  // Convert seconds to milliseconds
+    //log date and time for next run
+    this.log('next token refresh: ' + new Date(Date.now() + (expiresIn - 3600) * 1000).toISOString());
 
-    this.log('reauthorize run sucessfully');
-    this.homey.settings.set('tokenv2', token);
     //log the function name and token
-    this.log('reauthorize: ' + this.homey.settings.get('tokenv2'));
-      return token;
+    if (data.result_code === "0") {
+      this.homey.settings.set('APIv2 result_code <> 0', false);
+      this.homey.settings.set('tokenv2', token);
+      this.log('reauthorize run sucessfully, new token set');
+    }
+
+      return data.result_code;
   }
 
     
