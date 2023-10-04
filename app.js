@@ -69,7 +69,7 @@ class ScinanApp extends Homey.App {
 	cleanup() {
 		clearInterval(this.interval);
 	}
-	async APIv2() {
+	async APIv2(retryCount = 0) {
 		if (this.homey.settings.get('lastTokenRefresh')) {
 			this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
 		}
@@ -127,7 +127,13 @@ class ScinanApp extends Homey.App {
 					// Reauthorize to get a new token
 					try {
 						await this.reauthorize();
-						return await this.APIv2();
+						let MAX_API_RETRIES = 3;
+						if (retryCount < MAX_API_RETRIES) {
+							return await this.APIv2(retryCount + 1);
+						} else {
+							this.log(`APIv2: Max retries (${MAX_API_RETRIES}) reached.`);
+							// Handle max retry scenario (e.g., log, alert, etc.)
+						}
 					} catch (error) {
 						this.homey.settings.set('last APIv2 result', responseData);
 						console.error("Reauthorization failed", error);
@@ -142,7 +148,7 @@ class ScinanApp extends Homey.App {
 			//throw new Error(error);
 		}
 	}
-	async reauthorize() {
+	async reauthorize(retryCount = 0) {
 		this.log('reauthorizing')
 		const username = this.homey.settings.get('usernamev2');
 		const md5Password = this.homey.settings.get('md5Password');
@@ -173,7 +179,15 @@ class ScinanApp extends Homey.App {
 		};
 		const response = await fetch(AUTHORIZATION_URL_V2, requestOptions_auth);
 		if (!response.ok) {
-			throw new Error(`Failed to get token:  ${response.statusText}`);
+			let MAX_RETRIES = 3;
+			if (retryCount < MAX_RETRIES) {
+				this.log(`Failed to get token, retrying (${retryCount + 1}/${MAX_RETRIES})...`);
+				await new Promise(resolve => setTimeout(resolve, 5000));
+				return this.reauthorize(retryCount + 1);
+			} else {
+				// If max retries have been reached, throw an error
+				throw new Error(`Failed to get token after ${MAX_RETRIES} attempts: ${response.statusText}`);
+			}
 		}
 		let token;
 		let data;
