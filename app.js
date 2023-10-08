@@ -42,7 +42,12 @@ class ScinanApp extends Homey.App {
 			this.homey.settings.set('u_interval', 15)
 		}
 		this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
-		this.APIv2UpdateInterval();
+		try {
+			this.reauthorize();
+			this.APIv2UpdateInterval();
+		} catch (error) {
+			this.log(error);
+		}		
 		//this.log('intiate listner...')
 		//this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
 		/*this.homey.settings.on('set', (key, value) => {
@@ -217,10 +222,7 @@ class ScinanApp extends Homey.App {
 		this.homey.settings.set('lastTokenRefresh', currentTime);
 		this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
 		expiresIn = expiresIn || 1000 * 60 * 60 * 2; // Default to 2 hours
-		const hours = Math.floor(expiresIn / 3600);
-		const minutes = Math.floor((expiresIn % 3600) / 60);
-		const seconds = expiresIn % 60;
-		this.log(`expires in: ${hours} hours, ${minutes} minutes, ${seconds} seconds`);		
+
 		// Clear any existing timeout
 		if (reauthState.reauthTimeout) {
 			clearTimeout(reauthState.reauthTimeout);
@@ -229,8 +231,21 @@ class ScinanApp extends Homey.App {
 		reauthState.reauthTimeout = setTimeout(() => {
 			this.reauthorize();
 		}, (expiresIn - 3600) * 1000); // Convert seconds to milliseconds
-		//log date and time for next run
-		this.log('next token refresh: ' + new Date(Date.now() + (expiresIn - 3600) * 1000).toISOString());
+		// Calculate the time until the next token refresh
+
+		const expHours = Math.floor(expiresIn / 3600);
+		const expMinutes = Math.floor((expiresIn % 3600) / 60);
+		const expSeconds = expiresIn % 60;
+
+		const refreshTime = expiresIn - 3600;
+		const refreshHours = Math.floor(refreshTime / 3600);
+		const refreshMinutes = Math.floor((refreshTime % 3600) / 60);
+		const refreshSeconds = refreshTime % 60;
+
+		// Log the expiration time and the next token refresh time
+		this.log(`expires in: ${expHours} hours, ${expMinutes} minutes, ${expSeconds} seconds`);
+		this.log(`next token refresh: ${refreshHours} hours, ${refreshMinutes} minutes, ${refreshSeconds} seconds`);
+
 		//log the function name and token
 		if (data.result_code === "0") {
 			this.homey.settings.set('APIv2 result_code <> 0', false);
