@@ -1,5 +1,6 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
+
 const {
 	macToImei,
 	getTimestamp,
@@ -8,6 +9,7 @@ const {
 	tokenRepair,
 	setMD5Password
 } = require('./lib/Utils');
+
 const {
 	ERROR_CODES,
 	LIST_URL_V2,
@@ -16,9 +18,11 @@ const {
 	USER_AGENT_V2,
 	AUTHORIZATION_URL_V2
 } = require('./lib/Constants');
+
 const reauthState = {
 	reauthTimeout: null
 };
+
 class ScinanApp extends Homey.App {
 	async onInit() {
 		await tokenRepair(this.homey);
@@ -197,6 +201,7 @@ class ScinanApp extends Homey.App {
 			if (data && data.resultData && data.resultData.access_token) {
 				token = data.resultData.access_token;
 				expiresIn = Number(data.resultData.expires_in);
+				this.log('token expires in: ' + expiresIn + ' seconds');
 			} else {
 				// Handle HTML response
 				const html = await response.text();
@@ -211,8 +216,11 @@ class ScinanApp extends Homey.App {
 		const currentTime = new Date().toISOString();
 		this.homey.settings.set('lastTokenRefresh', currentTime);
 		this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
-		expiresIn = expiresIn || 1000 * 60 * 30; // Default to 30 minutes
-		this.log('expires in: ' + expiresIn + ' seconds')
+		expiresIn = expiresIn || 1000 * 60 * 60 * 2; // Default to 2 hours
+		const hours = Math.floor(expiresIn / 3600);
+		const minutes = Math.floor((expiresIn % 3600) / 60);
+		const seconds = expiresIn % 60;
+		this.log(`expires in: ${hours} hours, ${minutes} minutes, ${seconds} seconds`);		
 		// Clear any existing timeout
 		if (reauthState.reauthTimeout) {
 			clearTimeout(reauthState.reauthTimeout);
