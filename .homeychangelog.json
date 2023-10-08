@@ -148,5 +148,11 @@
   },
   "2.4.7": {
     "en": "removed device logging"
+  },
+  "2.4.8": {
+    "en": "reauth should now reset api blocker upon success"
+  },
+  "2.4.9": {
+    "en": "adjustments to reauthentication flow"
   }
 }
