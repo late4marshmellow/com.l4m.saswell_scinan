@@ -154,5 +154,8 @@
   },
   "2.4.9": {
     "en": "adjustments to reauthentication flow"
+  },
+  "2.4.10": {
+    "en": "tweaked the re-authorization and added clearer logging "
   }
 }
