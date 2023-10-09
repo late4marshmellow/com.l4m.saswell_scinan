@@ -2,7 +2,6 @@ const Homey = require('homey');
 const fetch = require('node-fetch');
 
 const {
-	macToImei,
 	getTimestamp,
 	createMD5Hash,
 	createMD5HashForSign,
@@ -31,23 +30,27 @@ class ScinanApp extends Homey.App {
 		//this.api.post('/hashPassword', this.onHashPassword.bind(this));
 		if (!this.homey.settings.get('macToImeiMD5')) {
 			this.log('starting mactoimei...');
-			const imei = await macToImei();
+			const imei = await this.macToImei();
 			this.log('set mactoimei...');
 			const imeiHash = await createMD5Hash(imei, true);
 			this.log('set imeiHash...');
 			this.homey.settings.set('macToImeiMD5', imeiHash);
 		}
-		//this.log("IMEI MD5 HASH: " + this.homey.settings.get('macToImeiMD5'));
 		if (!this.homey.settings.get('u_interval')) {
 			this.homey.settings.set('u_interval', 15)
 		}
 		this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
 		try {
-			this.reauthorize();
-			this.APIv2UpdateInterval();
+			if (this.homey.settings.get('tokenv2')) {
+				this.reauthorize();
+				this.APIv2UpdateInterval();
+			} else {
+				this.log('No devices paired, skipping reauthorization and APIv2 update');
+			}
 		} catch (error) {
 			this.log(error);
-		}		
+		}
+
 		//this.log('intiate listner...')
 		//this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
 		/*this.homey.settings.on('set', (key, value) => {
@@ -254,5 +257,51 @@ class ScinanApp extends Homey.App {
 		}
 		return data.result_code;
 	}
+
+	async macToImei() {
+		let mac = await this.fetchMac();
+		this.log("going on")
+		let base = mac.replace(/:/g, '').substring(0, 12);
+		base += '123';
+		let checkDigit = await this.luhnCheckDigit(base);
+		return base + checkDigit;
+	}
+	
+	async fetchMac() {
+		let mac;
+		try {
+			//this needs scope: homey.system.readonly
+			const data = await Homey.system.getInfo();
+			mac = data.wifiMac;
+			return mac;
+		} catch (error) {
+			console.error("An error occurred while fetching the MAC:", error);
+				mac = this.homey.settings.get('mac') ? this.homey.settings.get('mac') : null;
+				if (!mac) {
+					this.log('setting random mac...');
+					mac = Array(6).fill().map(() => Math.floor(Math.random() * 256).toString(16)).join(':');
+					this.homey.settings.set('randMac', mac);
+					return mac;
+				}
+				return mac;
+		}
+	};	
+
+	async luhnCheckDigit(number) {
+		let sum = 0;
+		let alt = true;
+		for (let i = number.length - 1; i >= 0; i--) {
+			let n = parseInt(number[i], 10);
+			if (alt) {
+				n *= 2;
+				if (n > 9) n -= 9;
+			}
+			sum += n;
+			alt = !alt;
+		}
+		return (sum % 10 === 0) ? 0 : (10 - (sum % 10));
+	}
+	
+
 }
 module.exports = ScinanApp;
