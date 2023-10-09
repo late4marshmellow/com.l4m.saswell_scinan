@@ -157,5 +157,8 @@
   },
   "2.4.10": {
     "en": "tweaked the re-authorization and added clearer logging "
+  },
+  "2.4.11": {
+    "en": "minor fix"
   }
 }
