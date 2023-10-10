@@ -40,8 +40,9 @@ class ScinanApp extends Homey.App {
 			this.homey.settings.set('u_interval', 15)
 		}
 		this.log('u_interval setting: ' + this.homey.settings.get('u_interval'));
+
 		try {
-			if (this.homey.settings.get('tokenv2')) {
+			if (this.homey.settings.get('firstDeviceAdded')) {
 				this.reauthorize();
 				this.APIv2UpdateInterval();
 			} else {
@@ -81,6 +82,14 @@ class ScinanApp extends Homey.App {
 	cleanup() {
 		clearInterval(this.interval);
 	}
+
+	firstDeviceAdded() {
+		this.homey.settings.set('firstDeviceAdded', true);
+		this.reauthorize();
+		this.APIv2UpdateInterval();
+		this.log('first device added, reauthorizing and starting APIv2 update interval');
+	};
+
 	async APIv2(retryCount = 0) {
 		if (this.homey.settings.get('lastTokenRefresh')) {
 			this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
