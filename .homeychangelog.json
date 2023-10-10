@@ -166,5 +166,8 @@
   },
   "2.4.13": {
     "en": "fixed some bugs in fresh installs"
+  },
+  "2.4.14": {
+    "en": "Fixed crash and pairing on fresh installs"
   }
 }
