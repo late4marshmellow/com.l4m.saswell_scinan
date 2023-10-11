@@ -56,9 +56,9 @@ class ScinanApp extends Homey.App {
 		//this.log('refresh status' + this.homey.settings.get('RefreshDevices'));
 		/*this.homey.settings.on('set', (key, value) => {
 		  if ((key === "APIv2 result_code <> 0" && value === false) || 
-		     (key === "RefreshDevices" && value === true)) {
+			 (key === "RefreshDevices" && value === true)) {
 
-		    this.log('Running APIv2 after Event');
+			this.log('Running APIv2 after Event');
 		   this.APIv2();
 		}
 		});*/
@@ -165,6 +165,17 @@ class ScinanApp extends Homey.App {
 			return responseData;
 		} catch (error) {
 			this.log(error);
+			if (error.code === 'ECONNRESET') {
+				let MAX_API_RETRIES = 3;
+				if (retryCount < MAX_API_RETRIES) {
+					this.log(`APIv2: ECONNRESET, retrying (${retryCount + 1}/${MAX_API_RETRIES})...`);
+					await new Promise(resolve => setTimeout(resolve, 5000));
+					return this.APIv2(retryCount + 1);
+				} else {
+					this.log(`APIv2: Max retries (${MAX_API_RETRIES}) reached.`);
+					// TODO: Handle max retry scenario (e.g., log, alert, etc.)
+				}
+			}
 			//throw new Error(error);
 		}
 	}
@@ -274,7 +285,7 @@ class ScinanApp extends Homey.App {
 		let checkDigit = await this.luhnCheckDigit(base);
 		return base + checkDigit;
 	}
-	
+
 	async fetchMac() {
 		let mac;
 		try {
@@ -284,16 +295,16 @@ class ScinanApp extends Homey.App {
 			return mac;
 		} catch (error) {
 			console.error("An error occurred while fetching the MAC:", error);
-				mac = this.homey.settings.get('mac') ? this.homey.settings.get('mac') : null;
-				if (!mac) {
-					this.log('setting random mac...');
-					mac = Array(6).fill().map(() => Math.floor(Math.random() * 256).toString(16)).join(':');
-					this.homey.settings.set('randMac', mac);
-					return mac;
-				}
+			mac = this.homey.settings.get('mac') ? this.homey.settings.get('mac') : null;
+			if (!mac) {
+				this.log('setting random mac...');
+				mac = Array(6).fill().map(() => Math.floor(Math.random() * 256).toString(16)).join(':');
+				this.homey.settings.set('randMac', mac);
 				return mac;
+			}
+			return mac;
 		}
-	};	
+	};
 
 	async luhnCheckDigit(number) {
 		let sum = 0;
@@ -309,7 +320,7 @@ class ScinanApp extends Homey.App {
 		}
 		return (sum % 10 === 0) ? 0 : (10 - (sum % 10));
 	}
-	
+
 
 }
 module.exports = ScinanApp;
