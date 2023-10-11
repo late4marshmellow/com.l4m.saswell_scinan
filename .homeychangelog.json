@@ -172,5 +172,8 @@
   },
   "2.4.15": {
     "en": "error behaviour for APIv1 fresh install checks"
+  },
+  "2.4.16": {
+    "en": "Add retry mechanism for API connection reset"
   }
 }
