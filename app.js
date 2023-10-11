@@ -74,12 +74,11 @@ class ScinanApp extends Homey.App {
 		};
 	}
 	APIv2UpdateInterval() {
-		this.APIv2();
 		this.interval = setInterval(async () => {
 			await this.APIv2();
 		}, Number(this.homey.settings.get('u_interval')) * 60 * 1000); // 15 minutes
 	}
-	cleanup() {
+	cleanupInterval() {
 		clearInterval(this.interval);
 	}
 
