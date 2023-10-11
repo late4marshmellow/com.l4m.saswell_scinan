@@ -169,5 +169,8 @@
   },
   "2.4.14": {
     "en": "Fixed crash and pairing on fresh installs"
+  },
+  "2.4.15": {
+    "en": "error behaviour for APIv1 fresh install checks"
   }
 }
