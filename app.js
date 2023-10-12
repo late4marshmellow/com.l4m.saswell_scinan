@@ -184,7 +184,10 @@ class ScinanApp extends Homey.App {
 		const username = this.homey.settings.get('usernamev2');
 		const md5Password = this.homey.settings.get('md5Password');
 		const timestamp = getTimestamp();
-		const params_auth = {
+		const params = {
+			...params_auth,
+			timestamp,
+			
 			account: username,
 			app_key: APP_KEY,
 			company_id: COMPANY_ID,
