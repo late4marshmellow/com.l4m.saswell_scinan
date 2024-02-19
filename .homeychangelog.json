@@ -175,5 +175,8 @@
   },
   "2.4.16": {
     "en": "Add retry mechanism for API connection reset"
+  },
+  "2.5.0": {
+    "en": "Added a switch under advanced setting so on/off instead reflect the oposit of away state, this is ment for devices without on/off capabilities"
   }
 }
