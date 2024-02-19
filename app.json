@@ -513,6 +513,24 @@
         {
           "type": "group",
           "label": {
+            "en": "On/off functionality",
+            "no": "Av/på-funksjonalitet"
+          },
+          "children": [
+            {
+              "id": "onOffCapability",
+              "type": "checkbox",
+              "label": {
+                "en": "On/off reflects opposite state of away mode",
+                "no": "Av/på reflekterer motsatt tilstand av borte modus"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
             "en": "square meters of the heating floor",
             "no": "Hvor mange kvadradmeter varmefolie"
           },

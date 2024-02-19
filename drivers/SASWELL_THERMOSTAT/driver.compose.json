@@ -88,18 +88,18 @@
     {
       "type": "group",
       "label": {
-        "en": "on/off capability?",
-        "no": "av/på-funksjonalitet?"
+        "en": "On/off functionality",
+        "no": "Av/på-funksjonalitet"
       },
       "children": [
         {
           "id": "onOffCapability",
-          "type": "switch",
+          "type": "checkbox",
           "label": {
-            "en": "Device has on/off capability",
-            "no": "Enheten har av/på-funksjonalitet"
+            "en": "On/off reflects opposite state of away mode",
+            "no": "Av/på reflekterer motsatt tilstand av borte modus"
           },
-          "value": true
+          "value": false
         }
       ]
     },
