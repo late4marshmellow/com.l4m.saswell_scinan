@@ -88,6 +88,25 @@
     {
       "type": "group",
       "label": {
+        "en": "on/off capability?",
+        "no": "av/på-funksjonalitet?"
+      },
+      "children": [
+        {
+          "id": "onOffCapability",
+          "type": "switch",
+          "label": {
+            "en": "Device has on/off capability",
+            "no": "Enheten har av/på-funksjonalitet"
+          },
+          "value": true
+        }
+      ]
+    },
+
+    {
+      "type": "group",
+      "label": {
         "en": "square meters of the heating floor",
         "no": "Hvor mange kvadradmeter varmefolie"
       },
