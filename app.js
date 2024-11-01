@@ -1,5 +1,4 @@
 const Homey = require('homey');
-//const fetch = require('fetch');
 
 const {
 	getTimestamp,
@@ -254,7 +253,7 @@ class ScinanApp extends Homey.App {
 			}
 			if (data && data.resultData && data.resultData.access_token) {
 				const token = data.resultData.access_token;
-				const expiresIn = Number(data.resultData.expires_in); // Assuming expires_in is in seconds
+				const expiresIn = Number(data.resultData.expires_in); // in seconds
 				this.log('token expires in: ' + expiresIn + ' seconds');
 				const currentTime = new Date().toISOString();
 				this.homey.settings.set('lastTokenRefresh', currentTime);
