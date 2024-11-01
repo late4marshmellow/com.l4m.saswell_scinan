@@ -1,5 +1,5 @@
 const Homey = require('homey');
-const fetch = require('node-fetch');
+//const fetch = require('fetch');
 
 const {
 	getTimestamp,
@@ -80,6 +80,9 @@ class ScinanApp extends Homey.App {
 	}
 	cleanupInterval() {
 		clearInterval(this.interval);
+		if (this.longTimeoutId) {
+			clearTimeout(this.longTimeoutId);
+		}
 	}
 
 	firstDeviceAdded() {
@@ -123,6 +126,10 @@ class ScinanApp extends Homey.App {
 				redirect: 'follow',
 			};
 			this.log('fetching updates')
+			if (this.homey.settings.get('tokenv2') === null) {	// If token is null, stop API call (Improve this!)
+				this.log('Token is null, stopping API call');
+				return;
+			}
 			const response = await fetch(LIST_URL_V2, requestOptions_list);
 			this.log('response status: ' + response.status);
 			if (!response.ok) {
@@ -174,13 +181,29 @@ class ScinanApp extends Homey.App {
 				} else {
 					this.log(`APIv2: Max retries (${MAX_API_RETRIES}) reached.`);
 					// TODO: Handle max retry scenario (e.g., log, alert, etc.)
+					this.log('Max retries reached. Stopping API calls and setting app as unavailable.');
+					this.cleanupInterval();
+					await this.homey.app.setUnavailable('APIv2 failed after 3 retries.');
 				}
 			}
 			//throw new Error(error);
 		}
 	}
+
+	// Helper function to handle long timeouts
+	setLongTimeout(callback, duration) {
+		const MAX_TIMEOUT = 2147483647; // Maximum setTimeout delay in ms (~24.85 days)
+		if (duration > MAX_TIMEOUT) {
+			this.longTimeoutId = setTimeout(() => {
+				this.setLongTimeout(callback, duration - MAX_TIMEOUT);
+			}, MAX_TIMEOUT);
+		} else {
+			this.longTimeoutId = setTimeout(callback, duration);
+		}
+	}
+
 	async reauthorize(retryCount = 0) {
-		this.log('reauthorizing')
+		this.log('reauthorizing');
 		const username = this.homey.settings.get('usernamev2');
 		const md5Password = this.homey.settings.get('md5Password');
 		const timestamp = getTimestamp();
@@ -198,7 +221,6 @@ class ScinanApp extends Homey.App {
 		for (let [key, value] of Object.entries(params_auth)) {
 			urlencoded_auth.append(key, value);
 		}
-		// this is added twice? | urlencoded_auth.append("sign", sign);
 		const requestOptions_auth = {
 			method: 'POST',
 			headers: {
@@ -208,73 +230,59 @@ class ScinanApp extends Homey.App {
 			body: urlencoded_auth,
 			redirect: 'follow',
 		};
-		const response = await fetch(AUTHORIZATION_URL_V2, requestOptions_auth);
-		if (!response.ok) {
-			let MAX_RETRIES = 3;
-			if (retryCount < MAX_RETRIES) {
-				this.log(`Failed to get token, retrying (${retryCount + 1}/${MAX_RETRIES})...`);
-				await new Promise(resolve => setTimeout(resolve, 5000));
-				return this.reauthorize(retryCount + 1);
-			} else {
-				// If max retries have been reached, throw an error
-				throw new Error(`Failed to get token after ${MAX_RETRIES} attempts: ${response.statusText}`);
-			}
-		}
-		let token;
-		let data;
-		let expiresIn;
 		try {
-			data = await response.json();
-			if (data && data.resultData && data.resultData.access_token) {
-				token = data.resultData.access_token;
-				expiresIn = Number(data.resultData.expires_in);
-				this.log('token expires in: ' + expiresIn + ' seconds');
-			} else {
-				// Handle HTML response
-				const html = await response.text();
-				const start = html.indexOf('token:');
-				const end = html.indexOf('\r', start);
-				token = html.substring(start + 6, end);
+			const response = await fetch(AUTHORIZATION_URL_V2, requestOptions_auth);
+			if (!response.ok) {
+				const MAX_RETRIES = 3;
+				if (retryCount < MAX_RETRIES) {
+					this.log(`Failed to get token, retrying (${retryCount + 1}/${MAX_RETRIES})...`);
+					await new Promise(resolve => setTimeout(resolve, 5000));
+					return this.reauthorize(retryCount + 1);
+				} else {
+					this.cleanupInterval();
+					await this.homey.app.setUnavailable('APIv2 failed after 3 retries.');
+					throw new Error(`Failed to get token after ${MAX_RETRIES} attempts: ${response.statusText}`);
+				}
 			}
+			let data;
+			try {
+				data = await response.json();
+			} catch (error) {
+				const text = await response.text();
+				this.log('Non-JSON response:', text);
+				throw error;
+			}
+			if (data && data.resultData && data.resultData.access_token) {
+				const token = data.resultData.access_token;
+				const expiresIn = Number(data.resultData.expires_in); // Assuming expires_in is in seconds
+				this.log('token expires in: ' + expiresIn + ' seconds');
+				const currentTime = new Date().toISOString();
+				this.homey.settings.set('lastTokenRefresh', currentTime);
+				this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'));
+
+				// Calculate refresh duration (e.g., 1 hour before expiration)
+				const refreshDurationSeconds = expiresIn - 3600; // Refresh 1 hour before expiry
+				const refreshDurationMs = refreshDurationSeconds * 1000;
+
+				// Clear existing long timeout if any
+				if (this.longTimeoutId) {
+					clearTimeout(this.longTimeoutId);
+				}
+
+				// Set long timeout using the helper function
+				this.setLongTimeout(() => {
+					this.reauthorize();
+				}, refreshDurationMs);
+
+				this.homey.settings.set('APIv2 result_code <> 0', false);
+				this.homey.settings.set('tokenv2', token);
+				this.log('reauthorize run successfully, new token set');
+			}
+			return data.result_code;
 		} catch (error) {
-			console.error("Error processing the response:", error);
+			this.log('Error processing the response:', error);
+			throw error;
 		}
-		// Store the current time/date as the last token refresh time
-		const currentTime = new Date().toISOString();
-		this.homey.settings.set('lastTokenRefresh', currentTime);
-		this.log('last token refresh: ' + this.homey.settings.get('lastTokenRefresh'))
-		expiresIn = expiresIn || 1000 * 60 * 60 * 2; // Default to 2 hours
-
-		// Clear any existing timeout
-		if (reauthState.reauthTimeout) {
-			clearTimeout(reauthState.reauthTimeout);
-		}
-		// Set a new timeout to reauthorize 1 hour before the token expires
-		reauthState.reauthTimeout = setTimeout(() => {
-			this.reauthorize();
-		}, (expiresIn - 3600) * 1000); // Convert seconds to milliseconds
-		// Calculate the time until the next token refresh
-
-		const expHours = Math.floor(expiresIn / 3600);
-		const expMinutes = Math.floor((expiresIn % 3600) / 60);
-		const expSeconds = expiresIn % 60;
-
-		const refreshTime = expiresIn - 3600;
-		const refreshHours = Math.floor(refreshTime / 3600);
-		const refreshMinutes = Math.floor((refreshTime % 3600) / 60);
-		const refreshSeconds = refreshTime % 60;
-
-		// Log the expiration time and the next token refresh time
-		this.log(`expires in: ${expHours} hours, ${expMinutes} minutes, ${expSeconds} seconds`);
-		this.log(`next token refresh: ${refreshHours} hours, ${refreshMinutes} minutes, ${refreshSeconds} seconds`);
-
-		//log the function name and token
-		if (data.result_code === "0") {
-			this.homey.settings.set('APIv2 result_code <> 0', false);
-			this.homey.settings.set('tokenv2', token);
-			this.log('reauthorize run sucessfully, new token set');
-		}
-		return data.result_code;
 	}
 
 	async macToImei() {
