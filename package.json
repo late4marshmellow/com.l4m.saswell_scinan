@@ -16,6 +16,6 @@
   "author": "Petter Ruud, late4marshmellow",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.7.0"
+    
   }
 }
