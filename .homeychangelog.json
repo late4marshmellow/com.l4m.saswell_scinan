@@ -184,5 +184,8 @@
   },
   "2.5.2": {
     "en": "returned node-fetch dependencies for compatibility with previous Homey Pro models"
+  },
+  "2.5.3": {
+    "en": "downgraded node-fetch to 2.7.0"
   }
 }
