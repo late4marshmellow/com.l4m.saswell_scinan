@@ -187,5 +187,8 @@
   },
   "2.5.3": {
     "en": "downgraded node-fetch to 2.7.0"
+  },
+  "2.5.4": {
+    "en": "Improve error handling in token retrieval for API v1 and v2"
   }
 }
