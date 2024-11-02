@@ -181,5 +181,8 @@
   },
   "2.5.1": {
     "en": "Fixed an issue in token handling when repairing device"
+  },
+  "2.5.2": {
+    "en": "returned node-fetch dependencies for compatibility with previous Homey Pro models"
   }
 }
