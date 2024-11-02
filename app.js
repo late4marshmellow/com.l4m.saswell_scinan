@@ -1,4 +1,5 @@
 const Homey = require('homey');
+const fetch = require('node-fetch');
 
 const {
 	getTimestamp,
